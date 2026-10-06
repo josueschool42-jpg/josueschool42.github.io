@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla Periódica</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="page-header">
+      <h1>Tabla Periódica de los Elementos</h1>
+    </header>
+
+    <!-- Tabla periódica interactiva con filtros en su espacio central -->
+    <div class="table-scroll" aria-label="Tabla periódica interactiva">
+      <section class="controls-section" aria-label="Tipos de elementos y buscador">
+      <div class="legend-header">
+        <span class="legend-title">Familias y tipos de elementos:</span>
+      </div>
+
+      <div class="legend" id="legend" aria-label="Familias de elementos">
+        <button type="button" class="legend-chip active" data-category="all" aria-pressed="true">
+          <span class="chip-color all-chip"></span> Todos
+        </button>
+        <button type="button" class="legend-chip no-metal-filter" data-category="no-metal" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--nonmetal);"></span> No metales
+        </button>
+        <button type="button" class="legend-chip gas-noble-filter" data-category="gas-noble" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--noble-gas);"></span> Gases nobles
+        </button>
+        <button type="button" class="legend-chip alcalino-filter" data-category="alcalino" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--alkali);"></span> Metales alcalinos
+        </button>
+        <button type="button" class="legend-chip alcalinoterreo-filter" data-category="alcalinoterreo" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--alkaline-earth);"></span> Alcalinotérreos
+        </button>
+        <button type="button" class="legend-chip metaloide-filter" data-category="metaloide" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--metalloid);"></span> Metaloides
+        </button>
+        <button type="button" class="legend-chip halogeno-filter" data-category="halogeno" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--halogen);"></span> Halógenos
+        </button>
+        <button type="button" class="legend-chip transicion-filter" data-category="transicion" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--transition);"></span> Metales de transición
+        </button>
+        <button type="button" class="legend-chip post-transicion-filter" data-category="post-transicion" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--post-transition);"></span> Post-transición
+        </button>
+        <button type="button" class="legend-chip lantanido-filter" data-category="lantanido" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--lanthanide);"></span> Lantánidos
+        </button>
+        <button type="button" class="legend-chip actinido-filter" data-category="actinido" aria-pressed="false">
+          <span class="chip-color" style="background-color: var(--actinide);"></span> Actínidos
+        </button>
+      </div>
+      </section>
+      <div class="periodic-table" id="periodic-table"></div>
+    </div>
+  </main>
+
+  <!-- Modal interactivo con fotografía real -->
+  <div class="modal" id="element-modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+      <button class="close-btn" id="close-btn" aria-label="Cerrar modal">&times;</button>
+
+      <!-- Barra de navegación del modal (Anterior / Siguiente) -->
+      <div class="modal-nav">
+        <button id="modal-prev-btn" class="nav-btn" aria-label="Elemento anterior">
+          &#8592; Anterior
+        </button>
+        <span id="modal-badge-category" class="category-badge">Familia</span>
+        <button id="modal-next-btn" class="nav-btn" aria-label="Elemento siguiente">
+          Siguiente &#8594;
+        </button>
+      </div>
+
+     
+      <div class="modal-header-info">
+        <div class="symbol-display" id="modal-symbol-box" aria-hidden="true">
+          <span class="symbol-sub" id="modal-box-number">1</span>
+          <span class="symbol-main" id="modal-box-symbol">H</span>
+        </div>
+        <div class="modal-title-wrap">
+          <h2 id="modal-name">Nombre del Elemento</h2>
+          <p id="modal-family-subtitle" class="modal-subtitle">Elemento químico</p>
+        </div>
+      </div>
+
+      <!-- Cuerpo del modal -->
+      <div class="modal-body">
+        <!-- Foto real con caption -->
+        <div class="modal-media">
+          <div class="image-wrapper">
+            <img id="modal-image" src="" alt="" loading="lazy">
+          </div>
+          <p id="modal-caption" class="image-caption"></p>
+        </div>
+
+        <!-- Propiedades y descripción -->
+        <div class="modal-info">
+          <div class="info-grid">
+            <div class="info-cell">
+              <span class="cell-label">Número Atómico</span>
+              <span class="cell-val" id="modal-number">1</span>
+            </div>
+            <div class="info-cell">
+              <span class="cell-label">Símbolo</span>
+              <span class="cell-val" id="modal-symbol">H</span>
+            </div>
+            <div class="info-cell">
+              <span class="cell-label">Masa Atómica</span>
+              <span class="cell-val"><span id="modal-mass">1.008</span> u</span>
+            </div>
+            <div class="info-cell">
+              <span class="cell-label">Estado Físico</span>
+              <span class="cell-val" id="modal-phase">Gas</span>
+            </div>
+            <div class="info-cell">
+              <span class="cell-label">Periodo y Grupo</span>
+              <span class="cell-val" id="modal-period-group">P: 1 | G: 1</span>
+            </div>
+            <div class="info-cell">
+              <span class="cell-label">Configuración</span>
+              <span class="cell-val config-code" id="modal-config">1s¹</span>
+            </div>
+          </div>
+
+          <div class="desc-box">
+            <span class="section-title">Descripción y Propiedades</span>
+            <p id="modal-desc"></p>
+          </div>
+
+          <div class="discovery-box" id="modal-discovery-box">
+            <span class="section-title">Descubrimiento</span>
+            <p id="modal-discovered"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
